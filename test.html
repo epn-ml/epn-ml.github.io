@@ -56,25 +56,25 @@ print(x)
 </pre>
   
 <pre data-executable="true" data-language="python">
-  from ipyleaflet import *
-  from ipywidgets import *
+from ipyleaflet import *
+from ipywidgets import *
 
-  # A leaflet map with the Strava tile layer.
-  m = Map(center=(52, 10), zoom=8, basemap=basemaps.CartoDB.DarkMatter)
-  strata_all = basemap_to_tiles(basemaps.Strava.All)
-  m.add_layer(strata_all)
+# A leaflet map with the Strava tile layer.
+m = Map(center=(52, 10), zoom=8, basemap=basemaps.CartoDB.DarkMatter)
+strata_all = basemap_to_tiles(basemaps.Strava.All)
+m.add_layer(strata_all)
 
-  # Coordinates label
-  coordinates = Label(value='[]')
-  display(m)
-  display(coordinates)
+# Coordinates label
+coordinates = Label(value='[]')
+display(m)
+display(coordinates)
 
-  # Wire the mouse position with the coordinates label
-  def handle_interaction(**kwargs):
+# Wire the mouse position with the coordinates label
+def handle_interaction(**kwargs):
     if kwargs.get('type') == 'mousemove':
         coordinates.value = str(kwargs.get('coordinates'))
  
-  m.on_interaction(handle_interaction)
+m.on_interaction(handle_interaction)
 </pre>
 
 <h1>Leaflet map</h1>  
