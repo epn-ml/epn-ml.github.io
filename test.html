@@ -1,6 +1,114 @@
 <!DOCTYPE html>
 <html lang='en'>
-  <body>
-    test in base folder
-  </body>
+<head>
+  <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+  <title>ML MESSENGER Notebook</title>
+  <link rel="stylesheet" type="text/css" href="index.css" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js">
+  </script>
+
+  <!-- Thebe configuration !-->
+  <script type="text/x-thebe-config">
+    {
+      bootstrap: true,
+      requestKernel: true,
+      binderOptions: {
+        repo: "jupyter-widgets/ipyleaflet",
+        ref: "0.13.3",
+        binderUrl: "https://mybinder.org",
+        repoProvider: "github",
+      },
+      kernelOptions: {
+        name: "python3",
+      },
+  }
+  </script>
+
+  <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+
+  <!-- Load the Thebe library !-->
+  <script type="text/javascript" src="https://unpkg.com/thebelab@latest" ></script>
+  <!-- or to use a local build: -->
+  <!-- <script type="text/javascript" src="../lib/index.js"></script> !-->
+
+</head>
+  
+<body>
+
+<button id="activateButton" style="width: 120px; height: 40px; font-size: 1.5em;">
+  Activate
+</button>
+  
+<script>
+var bootstrapThebe = function() {
+    thebelab.bootstrap();
+}
+document.querySelector("#activateButton").addEventListener('click', bootstrapThebe)
+</script>
+  
+   
+<h1>Interactive Notebook cells</h1>
+
+<pre data-executable="true" data-language="python">
+x=5
+print(x)
+</pre>
+  
+<pre data-executable="true" data-language="python">
+  from ipyleaflet import *
+  from ipywidgets import *
+
+  # A leaflet map with the Strava tile layer.
+  m = Map(center=(52, 10), zoom=8, basemap=basemaps.CartoDB.DarkMatter)
+  strata_all = basemap_to_tiles(basemaps.Strava.All)
+  m.add_layer(strata_all)
+
+  # Coordinates label
+  coordinates = Label(value='[]')
+  display(m)
+  display(coordinates)
+
+  # Wire the mouse position with the coordinates label
+  def handle_interaction(**kwargs):
+    if kwargs.get('type') == 'mousemove':
+        coordinates.value = str(kwargs.get('coordinates'))
+ 
+  m.on_interaction(handle_interaction)
+</pre>
+
+<h1>Leaflet map</h1>  
+
+<pre data-executable="true" data-language="python">
+from ipyleaflet import Map, Heatmap
+from random import uniform
+import time
+
+def create_random_data(length):
+    "Return a list of some random lat/lon/value triples."
+    return [[uniform(-80, 80),
+         uniform(-180, 180),
+         uniform(0, 1000)] for i in range(length)]
+
+m = Map(center=[0, 0], zoom=2)
+m
+</pre>
+  
+<p>Now we add a heatmap:</p>
+
+<pre data-executable="true" data-language="python">
+heat = Heatmap(locations=create_random_data(1000), radius=20, blur=10)
+m.add_layer(heat)</pre>
+
+<p>Finally, we add some animation to our heatmap:</p>
+<pre data-executable="true" data-language="python">
+for i in range(100):
+    heat.locations = create_random_data(1000)
+    time.sleep(0.1)
+</pre>
+</div>
+</div>
+
+</body>
 </html>
+
