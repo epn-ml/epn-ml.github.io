@@ -56,6 +56,31 @@ print(x)
 </pre>
   
 <pre data-executable="true" data-language="python">
+#beware not functional yet
+import os
+import tarfile
+import urllib
+DOWNLOAD_ROOT = "https://raw.githubusercontent.com/epn-ml/LMSU-Mercury_boundaries/main/"
+DATA_PATH = os.path.join("csv_files")
+DATA_URL = DOWNLOAD_ROOT + "csv_files/dummy.txt"
+
+def fetch_data(data_url=DATA_URL, data_path=DATA_PATH):
+    os.makedirs(data_path, exist_ok=True)
+    tgz_path = os.path.join(data_path, "data.tgz")
+    urllib.request.urlretrieve(data_url, tgz_path)
+    data_tgz = tarfile.open(tgz_path)
+    data_tgz.extractall(path=data_path)
+    data_tgz.close()
+
+</pre>
+
+<pre data-executable="true" data-language="python">
+import numpy
+fetch_data()
+data = np.loadtxt("csv_files/dummy.txt")
+</pre>
+
+<pre data-executable="true" data-language="python">
 from ipyleaflet import *
 from ipywidgets import *
 
